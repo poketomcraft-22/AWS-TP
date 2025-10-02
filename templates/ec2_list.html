@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Gestion des Instances EC2</h1>
+
+    {% if instances %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>État</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for instance in instances %}
+            <tr>
+                <td>{{ instance.id }}</td>
+                <td>{{ instance.name }}</td>
+                <td>
+                    {% set state_class = 'state-' + instance.state %}
+                    <span class="{{ state_class }}">{{ instance.state | upper }}</span>
+                </td>
+                <td>
+                    {% if instance.state == 'running' %}
+                    <form method="POST" action="{{ url_for('ec2_action', action='stop', instance_id=instance.id) }}" style="display:inline;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir ARRÊTER {{ instance.name }} ({{ instance.id }}) ?');">Arrêter</button>
+                    </form>
+                    {% elif instance.state == 'stopped' %}
+                    <form method="POST" action="{{ url_for('ec2_action', action='start', instance_id=instance.id) }}" style="display:inline;">
+                        <button type="submit" class="btn btn-success">Démarrer</button>
+                    </form>
+                    {% else %}
+                    <span class="btn btn-default">En cours...</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>Aucune instance EC2 trouvée dans cette région.</p>
+    {% endif %}
+
+{% endblock %}

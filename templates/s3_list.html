@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Gestion des Buckets S3</h1>
+
+    <p><a href="{{ url_for('s3_create') }}" class="btn btn-success">➕ Créer un nouveau Bucket</a></p>
+
+    {% if buckets %}
+    {% for bucket in buckets %}
+    <div style="border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 4px;">
+        <h2>📦 Bucket : {{ bucket }}</h2>
+        
+        <form method="POST" action="{{ url_for('s3_upload', bucket_name=bucket) }}" enctype="multipart/form-data" style="margin-bottom: 10px;">
+            <label>Uploader un fichier :</label>
+            <input type="file" name="file" required style="width: 300px; display: inline-block;">
+            <button type="submit" class="btn btn-primary" style="margin-left: 10px;">Upload</button>
+        </form>
+        
+        <a href="{{ url_for('s3_delete_confirm', bucket_name=bucket) }}" class="btn btn-danger btn-sm">Supprimer le Bucket (Attention)</a>
+    </div>
+    {% endfor %}
+    {% else %}
+        <p>Aucun bucket S3 trouvé.</p>
+    {% endif %}
+
+{% endblock %}

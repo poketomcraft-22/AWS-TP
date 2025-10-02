@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Confirmer la Suppression du Bucket</h1>
+
+    <div style="border: 2px solid #dc3545; padding: 20px; background-color: #f8d7da; border-radius: 4px;">
+        <p style="color: #dc3545; font-weight: bold;">⚠️ ATTENTION : Cette action est irréversible et supprimera TOUS les objets dans le bucket.</p>
+        <p>Êtes-vous sûr de vouloir supprimer définitivement le bucket : <strong>{{ bucket_name }}</strong> ?</p>
+        
+        <form method="POST" action="{{ url_for('s3_delete', bucket_name=bucket_name) }}" style="display:inline;">
+            <button type="submit" class="btn btn-danger">OUI, Supprimer Définitivement</button>
+        </form>
+        
+        <a href="{{ url_for('s3_list') }}" class="btn btn-default">Annuler et Retourner à la Liste</a>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Créer un nouveau Bucket S3</h1>
+
+    <form method="POST" action="{{ url_for('s3_create') }}">
+        <label for="bucket_name">Nom du Bucket (doit être unique globalement, minuscule) :</label><br>
+        <input type="text" id="bucket_name" name="bucket_name" required placeholder="mon-nouveau-bucket-unique"><br>
+        
+        <button type="submit" class="btn btn-success">Créer le Bucket</button>
+    </form>
+
+    <p style="margin-top: 20px;"><a href="{{ url_for('s3_list') }}">Retour à la liste des Buckets</a></p>
+{% endblock %}
